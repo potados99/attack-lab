@@ -1,0 +1,5 @@
+# NAME:ADDRESS:PARAMS:RETURN
+
+touch1:0x40195b:void:void
+touch2:0x401987:unsigned int:void
+touch3:0x401a98:char *:void

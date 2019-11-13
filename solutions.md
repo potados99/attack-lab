@@ -34,7 +34,12 @@ We need to call them with right parameters by replacing return address stored in
 
 # Touch1
 
+~~~
+(gdb) call touch1
+$2 = {void ()} 0x40195b <touch1>
+~~~
 
+Touch1 is at 0x40195b, takes no parameter and returns nothing.
 
 ## Solve: rtarget
 
