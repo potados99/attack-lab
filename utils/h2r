@@ -1,14 +1,17 @@
 #!/bin/bash
 
-# Enable use of hex2raw by content, not filename.
+# Enable use of hex2raw by contents as arguments.
+# Useage:	./h2r [args]
 
 if [ "$#" -lt 1 ]; then
+	# Forward stdin.
 	echo -n "Type bytes in hex, separated by white spaces: "
 	read -a arr
 	./h2r "${arr[@]}"
 	exit 0
 fi
 
+# Pass args to stdin.
 ./hex2raw << END
 $@
 END
