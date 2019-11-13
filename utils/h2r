@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Enable use of hex2raw by content, not filename.
+
+if [ "$#" -lt 1 ]; then
+	echo -n "Type bytes in hex, separated by white spaces: "
+	read -a arr
+	./h2r "${arr[@]}"
+	exit 0
+fi
+
+./hex2raw << END
+$@
+END
+
