@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Launch ctarget offline.
+./bin/ctarget -q
