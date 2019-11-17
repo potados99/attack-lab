@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd ..
+
+utils/hex2raw < injection/rtouch3.hex > injection/rtouch3.txt

