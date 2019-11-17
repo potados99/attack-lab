@@ -3,16 +3,19 @@
 # Enable use of hex2raw by contents as arguments.
 # Useage:	./h2r [args]
 
+hex2raw_path=$(dirname "$0")/hex2raw
+h2r_path=$(dirname "$0")/h2r
+
 if [ "$#" -lt 1 ]; then
 	# Forward stdin.
 	echo -n "Type bytes in hex, separated by white spaces: "
 	read -a arr
-	./h2r "${arr[@]}"
+	$h2r_path "${arr[@]}"
 	exit 0
 fi
 
 # Pass args to stdin.
-./hex2raw << END
+$hex2raw_path << END
 $@
 END
 

