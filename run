@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Run all with answers.txt.
+
+bin/ctarget -i injection/ctouch1.txt
+bin/ctarget -i injection/ctouch2.txt
+bin/ctarget -i injection/ctouch3.txt
+
+bin/rtarget -i injection/rtouch2.txt
+bin/rtarget -i injection/rtouch3.txt
