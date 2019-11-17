@@ -1,5 +1,11 @@
 # attack-lab
 
+## Solutions
+
+[Here](https://github.com/potados99/attack-lab/blob/master/solutions.md).
+
+## Others
+
 This file contains materials for one instance of the attacklab.
 
 Files:
