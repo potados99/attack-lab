@@ -1,4 +1,0 @@
-#!/bin/bash
-
-# Launch rtarget offline.
-./bin/rtarget -q
