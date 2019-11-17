@@ -320,8 +320,6 @@ Let's encode it.
 
 ### Touch3
 
-in progress..
-
 ROP version of hexmatch seems to generate a real random number.
 
 The stack address is random, so we need to calculate it relatively.
